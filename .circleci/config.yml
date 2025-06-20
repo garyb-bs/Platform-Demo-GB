@@ -1,0 +1,64 @@
+version: 2.1
+orbs:
+  node: circleci/node@5.0.2
+  heroku: circleci/heroku@1.2.6
+  slack: circleci/slack@4.12.5
+  percy: percy/agent@volatile
+
+jobs:
+  test: # this can be any name you want
+    executor: node/default # use the default executor defined within the orb
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: npm
+      - run:
+          command: npm install
+          name: Install packages
+      - run:
+          command: npm run test
+          name: Run tests
+
+      - store_artifacts:
+          path: /home/circleci/project/reports/report.html
+          destination: browserstack-reports
+
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - .
+      
+  notify:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - slack/notify:
+          event: always
+          custom: |
+            {
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "Current Job: $CIRCLE_JOB"
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "Write some text here"
+                  }
+                }
+              ]
+              }
+
+workflows:
+  hyatt-demo-test:
+    jobs:
+      - test
+      - notify:
+          context: SlackSecret
+          requires:  
+            - test
