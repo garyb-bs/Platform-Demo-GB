@@ -14,7 +14,7 @@ test('A successful login was performed', async ({ page } : { page:any }) => {
   await page.goto('https://practicetestautomation.com/practice-test-login/');
 
   await page.locator("#username").fill(username);
-  await page.locator("#password").fill(wrongPassword);
+  await page.locator("#password").fill(password);
   await page.locator("#submit").click();
 
   await percySnapshot(page, 'Login Page');
