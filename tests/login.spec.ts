@@ -11,10 +11,7 @@ var wrongUsernameText = "Your username is invalid!";
 var wrongPasswordText = "Your password is invalid!";
 
 test('A successful login was performed', async ({ page } : { page:any }) => {
-  console.log(`[[PROPERTY|id=TC-787985]]`);
   await page.goto('https://practicetestautomation.com/practice-test-login/');
-
-  
 
   await page.locator("#username").fill(username);
   await page.locator("#password").fill(wrongPassword);
