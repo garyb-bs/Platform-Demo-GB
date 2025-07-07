@@ -15,5 +15,5 @@
     "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
   },
   
-  "include": ["./tests/**/*", "login.spec.ts"]
+  "include": ["./tests/**/*", "tests/login.spec.ts"]
 }
